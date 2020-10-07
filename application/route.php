@@ -12,6 +12,7 @@
 use \think\Route;
 //为资源控制器添加路由
 Route::resource('api/Homestay','admin/Homestay');
+Route::resource('index/detail','index/Detail');
 return [
     '__pattern__' => [
         'name' => '\w+',
