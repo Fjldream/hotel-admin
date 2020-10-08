@@ -239,7 +239,7 @@ return [
     'paginate' => [
         'type' => 'bootstrap',
         'var_page' => 'page',
-        'list_rows' => 15,
+        'list_rows' => 10,
     ],
     "salt" => 'fjldream',
     'defaultpassword' => '123456',
@@ -248,5 +248,9 @@ return [
         'success' =>200,
         'fail'=>404
     ],
-    'homestayLimit'=>8
+    'homestayLimit'=>8,
+    'code'=>[
+        'success'=>200,
+        'fail'=>404
+    ]
 ];

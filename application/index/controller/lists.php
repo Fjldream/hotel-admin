@@ -1,1 +1,0 @@
-<?phpnamespace app\index\controller;use think\Controller;class lists extends Controller{    public function index(){            }    public function lists(){        return $this->fetch();    }}
