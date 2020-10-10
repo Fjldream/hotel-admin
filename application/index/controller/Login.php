@@ -5,15 +5,8 @@ namespace app\index\controller;
 use think\Controller;
 use think\Request;
 
-class User extends Controller
+class Login extends Controller
 {
-    public function __construct(Request $request = null)
-    {
-        parent::__construct($request);
-        $this->code = config('code');
-    }
-
-
     /**
      * 显示资源列表
      *
@@ -44,22 +37,7 @@ class User extends Controller
     {
         //
         $data = $this->request->post();
-        //验证规则
-        $data['password'] = md5(crypt($data['password'],config('salt')));
-        $data['nickname'] = '小一'.time();
-        $model = model('User');
-        $result = $model->add($data);
-        if($result){
-            return json([
-                'code'=>$this->code['success'],
-                'msg'=>'注册成功'
-            ]);
-        }else{
-            return json([
-                'code'=>$this->code['fail'],
-                'msg'=>'注册失败,请稍后再试'
-            ]);
-        }
+
     }
 
     /**
