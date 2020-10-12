@@ -67,3 +67,38 @@ function resetPassword()
 {
     return md5(crypt(config('defaultpassword'), config('salt')));
 }
+function checkUserToken()
+{
+    $get_token = request()->get('token');
+    $post_token = request()->post('token');
+    $header_token = request()->header('token');
+
+    if ($get_token) {
+        $token = $get_token;
+    } else if ($post_token) {
+        $token = $post_token;
+
+    } else if ($header_token) {
+        $token = $header_token;
+    } else {
+        //401 授权失败
+        json([
+            'code' => 404,
+            'msg' => 'token不能为空'
+        ], 401)->send();
+        exit();
+    }
+    //解析token方法
+    $tokenResult = JWT:: verify($token, config('jwtkey'));
+    // var_dump($tokenResult);
+    if (!$tokenResult) {
+        json([
+            'code' => 404,
+            'msg' => 'token验证失败'
+        ], 401)->send();
+        exit();
+    }
+    request()->userid = $tokenResult['userid'];
+    request()->nickname = $tokenResult['nickname'];
+
+}

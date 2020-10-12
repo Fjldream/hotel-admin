@@ -15,6 +15,10 @@ Route::resource('api/Homestay','admin/Homestay');
 Route::resource('index/detail','index/Detail');
 Route::resource('index/user','index/User');
 Route::resource('index/lists','index/Lists');
+Route::resource('index/login','index/Login');
+Route::resource('index/orders','index/Orders');
+Route::resource('index/collection','index/Collection');
+
 return [
     '__pattern__' => [
         'name' => '\w+',

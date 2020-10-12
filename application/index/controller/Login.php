@@ -3,10 +3,18 @@
 namespace app\index\controller;
 
 use think\Controller;
+use think\Db;
+use think\JWT;
 use think\Request;
 
 class Login extends Controller
 {
+    public function __construct(Request $request = null)
+    {
+        parent::__construct($request);
+        $this->code = config('code');
+    }
+
     /**
      * 显示资源列表
      *
@@ -37,7 +45,27 @@ class Login extends Controller
     {
         //
         $data = $this->request->post();
-
+        // phone code
+        $model = model('User');
+        $result = $model->queryOne(['phone'=>$data['phone']]);
+        if($result){
+            $payload = [
+                'userid' =>$result['userid'],
+                'nickname' => $result['nickname'],
+                'avatar' => $result['avatar'],
+            ];
+            $token = JWT::getToken($payload,config('jwtkey'));
+            return json([
+                'code'=>$this->code['success'],
+                'msg'=>'登录成功',
+                'token'=>$token,
+            ]);
+        }else{
+            return json([
+                'code'=>$this->code['fail'],
+                'msg'=>'用户名不存在'
+            ]);
+        }
     }
 
     /**

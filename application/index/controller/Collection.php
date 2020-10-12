@@ -3,16 +3,16 @@
 namespace app\index\controller;
 
 use think\Controller;
+use think\Db;
 use think\Request;
 
-class User extends Controller
+class Collection extends Controller
 {
     public function __construct(Request $request = null)
     {
         parent::__construct($request);
         $this->code = config('code');
     }
-
 
     /**
      * 显示资源列表
@@ -43,21 +43,23 @@ class User extends Controller
     public function save(Request $request)
     {
         //
+        checkUserToken();
+        $id = $this->request->userid;
         $data = $this->request->post();
-        //验证规则
-        $data['password'] = md5(crypt($data['password'],config('salt')));
-        $data['nickname'] = '小一'.time();
-        $model = model('User');
-        $result = $model->add($data);
+//        var_dump($id);
+//        var_dump($data);
+        //$id = $data['userid'];
+        $collection = $data['collection'];
+       $result = Db::table('user')->where('userid','=',$id)->update(['collection'=>$collection]);
         if($result){
             return json([
                 'code'=>$this->code['success'],
-                'msg'=>'注册成功'
+                'msg'=>'更新数据成功'
             ]);
         }else{
             return json([
                 'code'=>$this->code['fail'],
-                'msg'=>'注册失败,请稍后再试'
+                'msg'=>'更新数据失败'
             ]);
         }
     }
@@ -70,24 +72,7 @@ class User extends Controller
      */
     public function read($id)
     {
-        //id从token里面拿
-        checkUserToken();
-        //payload 的负载为了带数据
-        $userid = $this->request->userid;
-        $model = model('User');
-        $result = $model->queryOne(['userid'=>$userid],"userid,nickname,avatar,phone,collection");
-        if($result){
-            return json([
-                'code'=>$this->code['success'],
-                'msg'=>'数据获取成功',
-                'data'=>$result
-            ]);
-        }else{
-            return json([
-                'code'=>$this->code['fail'],
-                'msg'=>'数据获取失败'
-            ]);
-        }
+        //
     }
 
     /**
@@ -111,6 +96,8 @@ class User extends Controller
     public function update(Request $request, $id)
     {
         //
+
+
     }
 
     /**

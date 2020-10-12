@@ -37,11 +37,11 @@ class Lists extends Controller
         }
         //搜索条件
         $where=[];
-        if (isset($data['province'])&&!empty($data['province'])){
-            $where['province'] =$data['hprovince'];
-        }
         if (isset($data['hcity'])&&!empty($data['hcity'])){
-            $where['hname'] =['like','%'.$data['hname'].'%'];
+            $where['hcity'] =['like','%'.$data['hcity'].'%'];
+        }
+        if (isset($data['hname'])&&!empty($data['hname'])){
+           $where['hname'] =['like','%'.$data['hname'].'%'];
         }
         //民宿状态字段
         //排序规则
@@ -66,7 +66,7 @@ class Lists extends Controller
             ]);
         }else{
             return json([
-                'code'=>$this->code['success'],
+                'code'=>$this->code['fail'],
                 'msg'=>'暂无数据',
             ]);
         }

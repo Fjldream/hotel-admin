@@ -5,14 +5,14 @@ namespace app\index\controller;
 use think\Controller;
 use think\Request;
 
-class User extends Controller
+class Orders extends Controller
 {
     public function __construct(Request $request = null)
     {
         parent::__construct($request);
         $this->code = config('code');
+        $this->model= model('Orders');
     }
-
 
     /**
      * 显示资源列表
@@ -43,23 +43,11 @@ class User extends Controller
     public function save(Request $request)
     {
         //
-        $data = $this->request->post();
-        //验证规则
-        $data['password'] = md5(crypt($data['password'],config('salt')));
-        $data['nickname'] = '小一'.time();
-        $model = model('User');
-        $result = $model->add($data);
-        if($result){
-            return json([
-                'code'=>$this->code['success'],
-                'msg'=>'注册成功'
-            ]);
-        }else{
-            return json([
-                'code'=>$this->code['fail'],
-                'msg'=>'注册失败,请稍后再试'
-            ]);
-        }
+        $this->request->post();
+        //后台验证
+        //$this->validate()->sence()->check();
+
+
     }
 
     /**
@@ -70,24 +58,7 @@ class User extends Controller
      */
     public function read($id)
     {
-        //id从token里面拿
-        checkUserToken();
-        //payload 的负载为了带数据
-        $userid = $this->request->userid;
-        $model = model('User');
-        $result = $model->queryOne(['userid'=>$userid],"userid,nickname,avatar,phone,collection");
-        if($result){
-            return json([
-                'code'=>$this->code['success'],
-                'msg'=>'数据获取成功',
-                'data'=>$result
-            ]);
-        }else{
-            return json([
-                'code'=>$this->code['fail'],
-                'msg'=>'数据获取失败'
-            ]);
-        }
+        //
     }
 
     /**
