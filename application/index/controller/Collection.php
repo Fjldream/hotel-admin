@@ -22,6 +22,22 @@ class Collection extends Controller
     public function index()
     {
         //
+        checkUserToken();
+        $data = $this->request->get();
+        $result = Db::table('homestay')->field('hid,hname,hscore,hcity,harea,hprice,hthumb')->where('hid','IN',$data)->select();
+        if($result){
+            return json([
+                'code'=>$this->code['success'],
+                'msg'=>'查询成功',
+                'data'=>$result
+            ]);
+        }else{
+            return json([
+                'code'=>$this->code['fail'],
+                'msg'=>'暂无数据',
+            ]);
+        }
+
     }
 
     /**
